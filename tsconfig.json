@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "es2019",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "lib": ["es2020", "dom"],
+    "declaration": true,
+    "alwaysStrict": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": true,
+    "strictFunctionTypes": true,
+    "allowSyntheticDefaultImports": true,
+    "noFallthroughCasesInSwitch": true,
+    "strictNullChecks": true,
+    "inlineSourceMap": false,
+    "importHelpers": true,
+    "outDir": "./dist/lib",
+    "typeRoots": ["types"],
+    "types": ["jasmine"],
+    "sourceMap": true,
+    "inlineSources": true,
+    "rootDir": "./src"
+  },
+  "include": ["src/**/*.ts", "src/**/*.d.ts"],
+  "exclude": ["src/**/*.spec.ts"]
+}
