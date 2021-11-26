@@ -22,9 +22,9 @@ export default /** @type {import("@web/test-runner").TestRunnerConfig} */ ({
     },
   },
   nodeResolve: true,
-  files: ['./src/*.spec.ts'],
+  files: ['./src/*.spec.js'],
   browsers: [playwrightLauncher({ product: 'chromium' })],
-  plugins: [esbuildPlugin({ ts: true, json: true, target: 'auto', sourceMap: true })]
+  plugins: [esbuildPlugin({ target: 'auto', sourceMap: true })]
 });
 ```
 
@@ -53,6 +53,37 @@ To run your tests run `web-test-runner` in the terminal.
 
 ```bash
 web-test-runner
+```
+
+## TypeScript
+
+If you use TypeScript you will need to add some additional configuiration. Update your
+config to read `.ts` extentions and add the `ts: true` flag to the `esBuildPlugin`.
+
+```javascript
+import { playwrightLauncher } from '@web/test-runner-playwright';
+import { esbuildPlugin } from '@web/dev-server-esbuild';
+import { jasmineTestRunnerConfig } from 'web-test-runner-jasmine';
+
+export default /** @type {import("@web/test-runner").TestRunnerConfig} */ ({
+  ...
+  files: ['./src/*.spec.ts'],
+  plugins: [esbuildPlugin({ ts: true, json: true, target: 'auto', sourceMap: true })]
+  ...
+});
+```
+
+Ensure you have the `@types/jasmine` package installed and add `jasmine` to the `types`
+in your `tsconfig.json`.
+
+```json
+{
+  "compilerOptions": {
+    ...
+    "types": ["jasmine"],
+    ...
+  }
+}
 ```
 
 Learn more about [Web Test Runner](https://modern-web.dev/docs/test-runner/overview/).
