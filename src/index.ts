@@ -1,4 +1,9 @@
 import { defaultReporter } from '@web/test-runner';
+import fs from 'fs';
+import { createRequire } from 'module';
+import { pathToFileURL } from 'url';
+const require = createRequire(import.meta.url);
+const jasminePath = pathToFileURL(require.resolve('jasmine-core/lib/jasmine-core/jasmine.js'));
 
 export const jasmineTestRunnerConfig = () => {
   return {
@@ -19,7 +24,7 @@ export const jasmineTestRunnerConfig = () => {
           <head>
             ${testFramework.config.styles.map(style => `<link href="${style}" rel="stylesheet" />`)}
             <script>window.process = { env: { NODE_ENV: "development" } }</script>
-            <script type="text/javascript" src="${testFramework.path}"></script>
+            <script>${fs.readFileSync(jasminePath, 'utf8')}</script>
             <script type="module">
               import { getConfig, sessionStarted, sessionFinished, sessionFailed } from '@web/test-runner-core/browser/session.js';
    
