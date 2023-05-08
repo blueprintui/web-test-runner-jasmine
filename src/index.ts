@@ -22,7 +22,7 @@ export const jasmineTestRunnerConfig = () => {
       return /* html */`
         <html>
           <head>
-            ${testFramework.config.styles.map(style => `<style>${fs.readFileSync(style, 'utf8')}</style>`)}
+            ${testFramework.config.styles.map(style => `<style>${fs.readFileSync(style, 'utf8')}</style>`).join('\n')}
             <script>window.process = { env: { NODE_ENV: "development" } }</script>
             <script>${fs.readFileSync(jasminePath, 'utf8')}</script>
             <script type="module">

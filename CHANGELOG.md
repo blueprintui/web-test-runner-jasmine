@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.4
+- update dependencies
+- fix CSS inline format
+
 ## 0.0.3
 - inline runtime CSS for easier style resolution
 
