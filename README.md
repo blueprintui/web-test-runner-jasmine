@@ -18,7 +18,7 @@ export default /** @type {import("@web/test-runner").TestRunnerConfig} */ ({
   ...jasmineTestRunnerConfig(),
   testFramework: {
     config: {
-      timeout: 10000
+      defaultTimeoutInterval: 5000
     },
   },
   nodeResolve: true,

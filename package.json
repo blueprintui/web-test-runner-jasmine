@@ -1,6 +1,6 @@
 {
   "name": "web-test-runner-jasmine",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Plugin for Jasmine and Web Test Runner",
   "main": "./index.js",
   "module": "./index.js",
@@ -18,14 +18,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/coryrylan/web-test-runner-jasmine.git"
+    "url": "git+https://github.com/blueprintui/web-test-runner-jasmine.git"
   },
   "author": "Crylan Software",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/coryrylan/web-test-runner-jasmine/issues"
+    "url": "https://github.com/blueprintui/web-test-runner-jasmine/issues"
   },
-  "homepage": "https://github.com/coryrylan/web-test-runner-jasmine#readme",
+  "homepage": "https://github.com/blueprintui/web-test-runner-jasmine",
   "devDependencies": {
     "@types/jasmine": "^4.3.1",
     "@web/dev-server-esbuild": "^0.4.1",
