@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.0.5
+- fix `defaultTimeoutInterval` default and docs
+
 ## 0.0.4
 - update dependencies
 - fix CSS inline format

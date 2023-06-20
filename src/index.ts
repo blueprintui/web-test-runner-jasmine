@@ -5,16 +5,24 @@ import { pathToFileURL } from 'url';
 const require = createRequire(import.meta.url);
 const jasminePath = pathToFileURL(require.resolve('jasmine-core/lib/jasmine-core/jasmine.js'));
 
+export interface JasmineConfig {
+  /** https://jasmine.github.io/api/edge/jasmine.html#.DEFAULT_TIMEOUT_INTERVAL */
+  defaultTimeoutInterval?: number;
+  /** @deprecated use defaultTimeoutInterval */
+  timeout?: number;
+  styles?: []
+}
+
 export const jasmineTestRunnerConfig = () => {
   return {
     reporters: [
       defaultReporter({ reportTestResults: true, reportTestProgress: true })
     ],
-    testRunnerHtml: (_path: any, config: { testFramework: { config?: { timeout?: number, styles?: [] }}}) => {
+    testRunnerHtml: (_path: any, config: { testFramework: { config?: JasmineConfig }}) => {
       const testFramework = {
         path: './node_modules/jasmine-core/lib/jasmine-core/jasmine.js',
         config: {
-          timeout: 20000,
+          defaultTimeoutInterval: 5000,
           styles: [],
           ...config.testFramework?.config
         }
@@ -85,7 +93,7 @@ export const jasmineTestRunnerConfig = () => {
               (async () => {
                 sessionStarted();
                 const { testFile, watch, debug, testFrameworkConfig } = await getConfig();
-                const config = { defaultTimeoutInterval: 60000, ...(testFrameworkConfig ?? {}) };
+                const config = { defaultTimeoutInterval: 5000, ...(testFrameworkConfig ?? {}) };
   
                 jasmine.DEFAULT_TIMEOUT_INTERVAL = config.defaultTimeoutInterval;
   
