@@ -13,6 +13,7 @@
     "ci": "npm run clean && npm run build && npm run test",
     "clean": "del ./dist",
     "test": "web-test-runner --coverage",
+    "test:node": "tsc --project tsconfig.node-spec.json && jasmine",
     "build": "tsc --project ./tsconfig.lib.json && cpy ./package.json dist/lib/ && cpy ./README.md dist/lib/",
     "publish": "cd ./dist/lib && npm publish --access public"
   },
