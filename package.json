@@ -1,6 +1,6 @@
 {
   "name": "web-test-runner-jasmine",
-  "version": "0.0.5",
+  "version": "1.0.0",
   "description": "Plugin for Jasmine and Web Test Runner",
   "main": "./index.js",
   "module": "./index.js",
@@ -10,34 +10,33 @@
     "*"
   ],
   "scripts": {
-    "ci": "npm run clean && npm run build && npm run test",
-    "clean": "del ./dist",
-    "test": "web-test-runner --coverage",
-    "test:node": "tsc --project tsconfig.node-spec.json && jasmine",
-    "build": "tsc --project ./tsconfig.lib.json && cpy ./package.json dist/lib/ && cpy ./README.md dist/lib/",
+    "postinstall": "patch-package",
+    "ci": "npm run build && npm run test",
+    "test": "tsc --project tsconfig.spec.json && jasmine",
+    "build": "node scripts/build.mjs",
     "publish": "cd ./dist/lib && npm publish --access public"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/blueprintui/web-test-runner-jasmine.git"
+    "url": "git+https://github.com/jamcoupe/web-test-runner-jasmine.git"
   },
-  "author": "Crylan Software",
+  "author": "Jamie Couperwhite",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/blueprintui/web-test-runner-jasmine/issues"
+    "url": "https://github.com/jamcoupe/web-test-runner-jasmine/issues"
   },
-  "homepage": "https://github.com/blueprintui/web-test-runner-jasmine",
+  "homepage": "https://github.com/jamcoupe/web-test-runner-jasmine",
   "devDependencies": {
-    "@types/jasmine": "^4.3.1",
-    "@web/dev-server-esbuild": "^0.4.1",
-    "@web/test-runner": "^0.16.1",
-    "@web/test-runner-playwright": "^0.10.0",
-    "cpy-cli": "^4.2.0",
-    "del-cli": "^5.0.0",
+    "@types/jasmine": "^4.3.5",
+    "@web/dev-server-esbuild": "^1.0.2",
+    "@web/test-runner-playwright": "^0.11.0",
+    "dax-sh": "^0.39.2",
     "jasmine": "^4.6.0",
+    "patch-package": "^8.0.0",
     "typescript": "^5.0.4"
   },
-  "dependencies": {
-    "@web/test-runner": "^0.16.1"
+  "peerDependencies": {
+    "jasmine-core": "^4.6.0",
+    "@web/test-runner": "^0.18.0"
   }
 }

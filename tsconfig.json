@@ -18,8 +18,7 @@
     "inlineSourceMap": false,
     "importHelpers": true,
     "outDir": "./dist/lib",
-    "typeRoots": ["types"],
-    "types": ["jasmine"],
+    "types": ["jasmine", "node"],
     "sourceMap": true,
     "inlineSources": true,
     "rootDir": "./src"

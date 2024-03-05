@@ -7,16 +7,16 @@ export async function testFile(file: string): Promise<{ code: number | null, ter
   if (child.stdout && child.stderr) {
     child.stdout.setEncoding('utf8');
     child.stderr.setEncoding('utf8');
-    child.stdout.on('data', (data) => {
+    child.stdout.on('data', (data: any) => {
       scriptOutput += data.toString();
     });
-    child.stderr.on('data', (data) => {
+    child.stderr.on('data', (data: any) => {
       scriptOutput += data.toString();
     });
   }
-  
+
   return new Promise((resolve) => {
-    child.on('exit', (code) => {
+    child.on('exit', (code: any) => {
       resolve({code, terminalOutput: scriptOutput});
     })
   });
