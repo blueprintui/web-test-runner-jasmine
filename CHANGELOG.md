@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.0
+- update to peer `jasmine-core` to 5.1.2
+
 ## 1.0.0
 - display errors correctly to web-test-runner users
 
