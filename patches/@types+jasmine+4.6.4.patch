@@ -1,0 +1,13 @@
+diff --git a/node_modules/@types/jasmine/index.d.ts b/node_modules/@types/jasmine/index.d.ts
+index bf3177a..daee929 100644
+--- a/node_modules/@types/jasmine/index.d.ts
++++ b/node_modules/@types/jasmine/index.d.ts
+@@ -1022,7 +1022,7 @@ declare namespace jasmine {
+     interface Spec {
+         new(attrs: any): any;
+ 
+-        readonly id: number;
++        readonly id: string;
+         env: Env;
+         readonly description: string;
+         getFullName(): string;

@@ -1,0 +1,20 @@
+diff --git a/node_modules/@web/test-runner-core/src/coverage/getTestCoverage.ts b/node_modules/@web/test-runner-core/src/coverage/getTestCoverage.ts
+index 040d0b5..ec1d0a1 100644
+--- a/node_modules/@web/test-runner-core/src/coverage/getTestCoverage.ts
++++ b/node_modules/@web/test-runner-core/src/coverage/getTestCoverage.ts
+@@ -49,6 +49,7 @@ function getRangeDistance(encompassing: Range, range: Range) {
+   );
+ }
+ 
++// @ts-expect-error - Doesnt support typescript strict checking
+ function findKey<T extends BranchMapping | FunctionMapping>(items: Record<string, T>, item: T) {
+   for (const [key, m] of Object.entries(items)) {
+     if (rangeEquals(m.loc, item.loc)) {
+@@ -57,6 +58,7 @@ function findKey<T extends BranchMapping | FunctionMapping>(items: Record<string
+   }
+ }
+ 
++// @ts-expect-error - Doesnt support typescript strict checking
+ function findEncompassingKey<T extends BranchMapping | FunctionMapping>(
+   items: Record<string, T>,
+   item: T,
