@@ -1,0 +1,34 @@
+on:
+  push:
+    tags:
+      - 'v*'
+
+name: Publish Release
+
+jobs:
+  build:
+    name: Publish Release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: install
+        run: npm ci
+      
+      - name: package
+        run: npm run package
+
+      - name: publish to npm
+        uses: JS-DevTools/npm-publish@v3
+        with:
+          package: dist/lib
+          token: ${{ secrets.NPM_TOKEN }}
+          access: public # needed for first publish
+
+      - name: create release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/tarball/*.tgz
+          token: ${{ secrets.GITHUB_TOKEN }}
+          draft: true
+          prerelease: false

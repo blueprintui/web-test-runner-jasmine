@@ -17,13 +17,10 @@
     "strictNullChecks": true,
     "inlineSourceMap": false,
     "importHelpers": true,
-    "outDir": "./dist/lib",
-    "typeRoots": ["types"],
-    "types": ["jasmine"],
+    "types": ["jasmine", "node"],
     "sourceMap": true,
     "inlineSources": true,
-    "rootDir": "./src"
+    "rootDir": "."
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts"],
-  "exclude": ["src/**/*.spec.ts"]
+  "include": ["src/*.ts", "spec/*.ts", "spec/**/*.ts"]
 }

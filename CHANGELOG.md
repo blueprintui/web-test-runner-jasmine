@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.0
+- display errors correctly to web-test-runner users
+
 ## 0.0.5
 - fix `defaultTimeoutInterval` default and docs
 
