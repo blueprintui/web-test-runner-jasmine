@@ -8,7 +8,6 @@ export default /** @type {import("@web/test-runner").TestRunnerConfig} */ ({
   ...jasmineTestRunnerConfig(),
   testFramework: {
     config: {
-      verbose: true,
       defaultTimeoutInterval: 10000
     },
   },

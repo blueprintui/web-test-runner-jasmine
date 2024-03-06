@@ -1,6 +1,6 @@
 # web-test-runner-jasmine
 
-[![npm version](https://badge.fury.io/js/web-test-runner-jasmine.svg)](https://badge.fury.io/js/web-test-runner-jasmine) ![CI Build](https://github.com/coryrylan/web-test-runner-jasmine/actions/workflows/build.yml/badge.svg)
+[![npm version](https://badge.fury.io/js/@jcoup%2Fweb-test-runner-jasmine.svg)](https://badge.fury.io/js/@jcoup%2Fweb-test-runner-jasmine) ![CI Build](https://github.com/jamcoupe/web-test-runner-jasmine/actions/workflows/build.yml/badge.svg)
 
 A [Web Test Runner](https://modern-web.dev/docs/test-runner/overview/) plugin for running Jasmine.
 
