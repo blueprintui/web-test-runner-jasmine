@@ -20,7 +20,8 @@
     "types": ["jasmine", "node"],
     "sourceMap": true,
     "inlineSources": true,
-    "rootDir": "."
+    "rootDir": ".",
+    "noEmit": true,
   },
   "include": ["src/*.ts", "spec/*.ts", "spec/**/*.ts"]
 }

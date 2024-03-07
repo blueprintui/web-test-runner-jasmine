@@ -3,23 +3,6 @@ import type { TestResult, TestResultError } from "@web/test-runner-core";
 import type {BrowserSessionResult, RuntimeConfig} from "@web/test-runner-core/browser/session";
 import type {JasmineConfig} from "./jasmine-config";
 
-declare global {
-  interface JasmineJSApiReporter extends jasmine.CustomReporter {
-    started: boolean;
-    finished: boolean;
-    runDetails: any;
-    status(): 'loaded' | 'started' | 'done';
-    executionTime(): number;
-    suites(): Record<string, jasmine.SpecResult>;
-    specs(): jasmine.SpecResult[];
-  }
-
-  interface Window {
-    initJasmine: () => void;
-    jsApiReporter: JasmineJSApiReporter;
-  }
-}
-
 class JasmineWebTestRunnerReporter implements jasmine.CustomReporter {
   private _errors: TestResultError[] = [];
   

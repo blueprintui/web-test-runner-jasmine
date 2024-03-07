@@ -7,7 +7,7 @@ describe('suite-error', () => {
   
   describe('inner suite', () => {
     it('should show an error message', () => {
-      expect(anObject.methodThatDoesExist()).toEqual({something: 'different'});
+      expect(anObject.methodThatDoesExist()).toEqual({something: 'different'} as any);
     });
   });
 });

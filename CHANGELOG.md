@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.1.0
+- Allow a customers to provide global a global matcher file
+
 ## 2.0.0
 - update to peer `jasmine-core` to 5.1.2
 
