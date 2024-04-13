@@ -19,7 +19,6 @@
     "importHelpers": true,
     "outDir": "./dist/lib",
     "typeRoots": ["types"],
-    "types": ["jasmine"],
     "sourceMap": true,
     "inlineSources": true,
     "rootDir": "./src"

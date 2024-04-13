@@ -68,7 +68,7 @@ export const jasmineTestRunnerConfig = () => {
                   if (result.status !== 'passed' || result.status !== 'incomplete') {
                     result.failedExpectations.forEach(e => {
                       failedSpecs.push({
-                        message: result.description + ': ' + e.message,
+                        message: result.fullName + ': ' + e.message,
                         name: e.description,
                         stack: e.stack,
                         expected: e.expected,
