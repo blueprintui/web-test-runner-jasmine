@@ -65,7 +65,12 @@ export const jasmineTestRunnerConfig = () => {
                     });
                   });
   
-                  if (result.status !== 'passed' || result.status !== 'incomplete') {
+
+                const isManualSession = new URL(result.filename).searchParams.get('wtr-manual-session') === 'true';
+                if (isManualSession) {
+                  console.log(result.status.toUpperCase(), result.fullName);
+                }
+                if (result.status !== 'passed' || result.status !== 'incomplete') {
                     result.failedExpectations.forEach(e => {
                       failedSpecs.push({
                         message: result.fullName + ': ' + e.message,
@@ -74,6 +79,9 @@ export const jasmineTestRunnerConfig = () => {
                         expected: e.expected,
                         actual: e.actual,
                       });
+                      if (isManualSession) {
+                        console.error(e.message, e.stack ? '\\n' + e.stack : '');
+                      }
                     });
                   }
                 },
