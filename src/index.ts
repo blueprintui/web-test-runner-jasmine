@@ -18,7 +18,7 @@ export const jasmineTestRunnerConfig = () => {
     reporters: [
       defaultReporter({ reportTestResults: true, reportTestProgress: true })
     ],
-    testRunnerHtml: (_path: any, config: { testFramework: { config?: JasmineConfig }}) => {
+    testRunnerHtml: (_path: any, config: { testFramework: { config?: JasmineConfig } }) => {
       const testFramework = {
         path: './node_modules/jasmine-core/lib/jasmine-core/jasmine.js',
         config: {
@@ -35,7 +35,7 @@ export const jasmineTestRunnerConfig = () => {
             <script>${fs.readFileSync(jasminePath, 'utf8')}</script>
             <script type="module">
               import { getConfig, sessionStarted, sessionFinished, sessionFailed } from '@web/test-runner-core/browser/session.js';
-   
+  
               const testFramework = {
                 ...${JSON.stringify(testFramework)}
               };
@@ -48,44 +48,146 @@ export const jasmineTestRunnerConfig = () => {
               Object.assign(window, jasmineRequire.interface(jasmine, env));
               window.onload = function () {};
   
-              const failedSpecs = [];
-              const allSpecs = [];
-              const failedImports = [];
-  
-              env.addReporter({
-                jasmineStarted: () => {},
-                suiteStarted: () => {},
-                specStarted: () => {},
-                suiteDone: () => {},
-                specDone: result => {
-                  [...result.passedExpectations, ...result.failedExpectations].forEach(e => {
-                    allSpecs.push({
-                      name: e.description,
-                      passed: e.passed,
-                    });
-                  });
-  
-                  if (result.status !== 'passed' || result.status !== 'incomplete') {
-                    result.failedExpectations.forEach(e => {
-                      failedSpecs.push({
-                        message: result.fullName + ': ' + e.message,
-                        name: e.description,
-                        stack: e.stack,
-                        expected: e.expected,
-                        actual: e.actual,
-                      });
+              const findParentNode = (treeNode, result) => {
+                if (treeNode.id === result.parentSuiteId) {
+                  return treeNode;
+                } else if (treeNode.suites) {
+                  for (let i = 0; i < treeNode.suites.length; i++) {
+                    const childSuite = treeNode.suites[i];
+                    const elementFound = findParentNode(childSuite, result);
+                    if (elementFound) {
+                      return elementFound;
+                    }
+                  }
+                }
+                return null;
+              };
+              const findResultNode = (treeNode, result) => {
+                if (treeNode.id === result.id) {
+                  return treeNode;
+                }
+                if (treeNode.tests) {
+                  for (let i = 0; i < treeNode.tests.length; i++) {
+                    const childTest = treeNode.tests[i];
+                    const elementFound = findResultNode(childTest, result);
+                    if (elementFound) {
+                      return elementFound;
+                    }
+                  }
+                }
+                if (treeNode.suites) {
+                  for (let i = 0; i < treeNode.suites.length; i++) {
+                    const childSuite = treeNode.suites[i];
+                    const elementFound = findResultNode(childSuite, result);
+                    if (elementFound) {
+                      return elementFound;
+                    }
+                  }
+                }
+                return null;
+              };
+              const buildTestResults = (jasmineTreeNode) => {
+                const treeNode = {
+                  name: jasmineTreeNode.name
+                };
+                if (jasmineTreeNode.tests) {
+                  treeNode.tests = [];
+                  for (let i = 0; i < jasmineTreeNode.tests.length; i++) {
+                    const jasmineTestNode = jasmineTreeNode.tests[i];
+                    treeNode.tests.push({
+                      name: jasmineTestNode.name,
+                      passed: jasmineTestNode.passed,
+                      skipped: jasmineTestNode.skipped,
+                      duration: jasmineTestNode.duration,
+                      error: jasmineTestNode.errors?.[0]
                     });
                   }
+                }
+                if (jasmineTreeNode.suites) {
+                  treeNode.suites = [];
+                  for (let i = 0; i < jasmineTreeNode.suites.length; i++) {
+                    const jasmineSuiteNode = jasmineTreeNode.suites[i];
+                    treeNode.suites.push(buildTestResults(jasmineSuiteNode));
+                  }
+                }
+                return treeNode;
+              };
+  
+              const failedSpecs = [];
+              const failedImports = [];
+  
+              const jasmineRootTreeNode = {
+                id: null,
+                name: "",
+                suites: [],
+                tests: []
+              };
+  
+              env.addReporter({
+                jasmineStarted: suiteInfo => {},
+                suiteStarted: result => {
+                  if (!result.parentSuiteId) {
+                    jasmineRootTreeNode.id = result.id;
+                    jasmineRootTreeNode.name = result.description;
+                  } else {
+                    const nodeFound = findParentNode(jasmineRootTreeNode, result);
+                    if (nodeFound) {
+                      nodeFound.suites.push({
+                        id: result.id,
+                        name: result.description,
+                        suites: [],
+                        tests: []
+                      });
+                    }
+                  }
+                },
+                specStarted: result => {
+                  if (!result.parentSuiteId) {
+                    jasmineRootTreeNode.id = result.id;
+                    jasmineRootTreeNode.name = result.description;
+                  } else {
+                    const nodeFound = findParentNode(jasmineRootTreeNode, result);
+                    if (nodeFound) {
+                      nodeFound.tests.push({
+                        id: result.id,
+                        name: result.description
+                      });
+                    }
+                  }
+                },
+                specDone: result => {
+                  const nodeFound = findResultNode(jasmineRootTreeNode, result);
+                  nodeFound.passed = result.status === "passed";
+                  nodeFound.skipped = false;
+                  nodeFound.duration = result.duration;
+  
+                  if (result.failedExpectations && result.failedExpectations.length > 0) {
+                    nodeFound.errors = [];
+                    for (let i = 0; i < result.failedExpectations.length; i++) {
+                      const e = result.failedExpectations[i];
+  
+                      const testResultError = {
+                        message: result.fullName + ': ' + e.message,
+                        name: result.description,
+                        stack: e.stack,
+                        expected: JSON.stringify(e.expected) ?? String(e.expected),
+                        actual: JSON.stringify(e.actual) ?? String(e.actual)
+                      };
+  
+                      failedSpecs.push(testResultError);
+                      nodeFound.errors.push(testResultError);
+                    };
+                  }
+                },
+                suiteDone: result => {
+                  const nodeFound = findResultNode(jasmineRootTreeNode, result);
+                  nodeFound.passed = result.status === "passed";
                 },
                 jasmineDone: result => {
                   sessionFinished({
                     passed: result.overallStatus === 'passed',
                     errors: [...failedSpecs, ...failedImports],
-                    testResults: {
-                      name: '',
-                      suites: [],
-                      tests: allSpecs,
-                    },
+                    testResults: buildTestResults(jasmineRootTreeNode)
                   });
                 },
               });

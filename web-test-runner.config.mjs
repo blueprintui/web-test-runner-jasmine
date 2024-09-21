@@ -1,5 +1,6 @@
 import { playwrightLauncher } from '@web/test-runner-playwright';
 import { esbuildPlugin } from '@web/dev-server-esbuild';
+import { defaultReporter, summaryReporter } from "@web/test-runner";
 import { jasmineTestRunnerConfig } from './dist/lib/index.js'; // web-test-runner-jasmine
 
 export default /** @type {import("@web/test-runner").TestRunnerConfig} */ ({
@@ -25,4 +26,8 @@ export default /** @type {import("@web/test-runner").TestRunnerConfig} */ ({
       lines: 90,
     },
   },
+  reporters: [
+    defaultReporter(),
+    summaryReporter(),
+  ],
 });
