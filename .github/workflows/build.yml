@@ -8,12 +8,5 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
-      - name: install playwright
-        run: npx playwright install-deps
-
-      - name: install
-        run: npm ci
-
-      - name: build
-        run: npm run ci
+      - run: npm run setup
+      - run: npm run ci

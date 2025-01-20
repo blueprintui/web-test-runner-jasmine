@@ -9,8 +9,12 @@
   "files": [
     "*"
   ],
+  "engines": {
+    "node": "22.11.0"
+  },
   "scripts": {
     "ci": "npm run clean && npm run build && npm run test",
+    "setup": "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash && unset npm_config_prefix && . ~/.nvm/nvm.sh && nvm install && nvm use && npm i && npx playwright install chromium --with-deps chromium",
     "clean": "del ./dist",
     "test": "web-test-runner --coverage",
     "build": "tsc --project ./tsconfig.lib.json && cpy ./package.json dist/lib/ && cpy ./README.md dist/lib/",
@@ -37,6 +41,7 @@
     "@web/test-runner-playwright": "0.11.0",
     "cpy-cli": "5.0.0",
     "del-cli": "6.0.0",
+    "playwright": "1.49.1",
     "typescript": "5.7.3"
   }
 }
