@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.7
+- fix: add support for nested suites
+- fix: TestResultError(s) information
+- fix: TestSuiteResult(s) information
+- fix TestResult(s) information
+
 ## 0.0.6
 - fix: update dependencies 
 

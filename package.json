@@ -1,6 +1,6 @@
 {
   "name": "web-test-runner-jasmine",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Plugin for Jasmine and Web Test Runner",
   "main": "./index.js",
   "module": "./index.js",
@@ -26,17 +26,17 @@
     "url": "https://github.com/blueprintui/web-test-runner-jasmine/issues"
   },
   "homepage": "https://github.com/blueprintui/web-test-runner-jasmine",
-  "devDependencies": {
-    "@types/jasmine": "^5.1.4",
-    "@web/dev-server-esbuild": "^1.0.2",
-    "@web/test-runner": "^0.18.1",
-    "@web/test-runner-playwright": "^0.11.0",
-    "cpy-cli": "^5.0.0",
-    "del-cli": "^5.1.0",
-    "jasmine": "^5.1.0",
-    "typescript": "^5.4.5"
-  },
   "dependencies": {
-    "@web/test-runner": "^0.18.1"
+    "@web/test-runner": "^0.19.0",
+    "@web/test-runner-core": "^0.13.4",
+    "jasmine": "^5.5.0"
+  },
+  "devDependencies": {
+    "@types/jasmine": "5.1.5",
+    "@web/dev-server-esbuild": "1.0.3",
+    "@web/test-runner-playwright": "0.11.0",
+    "cpy-cli": "5.0.0",
+    "del-cli": "6.0.0",
+    "typescript": "5.7.3"
   }
 }
