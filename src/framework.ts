@@ -1,7 +1,7 @@
 /// <reference types="jasmine" />
 
 import { getConfig, sessionFailed, sessionFinished, sessionStarted, TestResultError, TestSuiteResult } from '@web/test-runner-core/browser/session.js';
-import type Jasmine from 'jasmine';
+import Jasmine from 'jasmine';
 
 import { JasmineConfig } from './index';
 import { findParentNode, findResultNode, isSuiteNode, SpecNode, SuiteNode } from './jasmine-suite-nodes';
@@ -147,10 +147,23 @@ env.addReporter({
 
 (async () => {
   sessionStarted();
-  const { testFile, watch, debug, testFrameworkConfig } = await getConfig();
+  const { testFile, debug, testFrameworkConfig } = await getConfig();
   const config = { defaultTimeoutInterval: 5000, ...(testFrameworkConfig ?? {}) };
 
   jasmine.DEFAULT_TIMEOUT_INTERVAL = config.defaultTimeoutInterval;
+
+  if (debug) {
+    const consoleReporter = Jasmine.ConsoleReporter();
+    let stdout = '';
+    consoleReporter.setOptions({
+      print: (t: string) => stdout += t,
+      showColors: true
+    });
+    env.addReporter(consoleReporter);
+    env.addReporter({jasmineDone: () => {
+      console.log(stdout);
+    }})
+  }
 
   try {
     await import(new URL(testFile, document.baseURI).href);
