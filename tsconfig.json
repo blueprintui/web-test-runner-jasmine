@@ -18,7 +18,6 @@
     "inlineSourceMap": false,
     "importHelpers": true,
     "outDir": "./dist/lib",
-    "typeRoots": ["types"],
     "sourceMap": true,
     "inlineSources": true,
     "rootDir": "./src"
