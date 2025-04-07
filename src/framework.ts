@@ -137,10 +137,16 @@ env.addReporter({
     nodeFound.passed = result.status === "passed";
   },
   jasmineDone: result => {
+    const errors: TestResultError[] = [...failedSpecs, ...failedImports];
+
+    if (result.incompleteReason) {
+      errors.push({message: result.incompleteReason});
+    }
+
     sessionFinished({
       passed: result.overallStatus === 'passed',
-      errors: [...failedSpecs, ...failedImports],
-      testResults: buildTestResults(jasmineRootTreeNode)
+      testResults: buildTestResults(jasmineRootTreeNode),
+      errors,
     });
   },
 });
