@@ -25,6 +25,7 @@ export const jasmineTestRunnerConfig = () => {
         }
       };
       return /* html */`
+        <!DOCTYPE html>
         <html>
           <head>
             ${testFramework.config.styles.map(style => `<style>${fs.readFileSync(style, 'utf8')}</style>`).join('\n')}
