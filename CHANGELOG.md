@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.0
+
+Thanks to [@devversion](https://github.com/devversion) and [@rhashimoto
+](https://github.com/rhashimoto) for the contributions!
+- feat: support debugging with --manual inside browser
+- fix: add doctype to avoid running in browser quirk mode
+- fix: report incomplete jasmine error
+
 ## 0.0.7
 - fix: add support for nested suites
 - fix: TestResultError(s) information
