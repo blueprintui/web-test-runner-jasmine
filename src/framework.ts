@@ -1,5 +1,6 @@
 /// <reference types="jasmine" />
 
+import assert from 'assert';
 import { getConfig, sessionFailed, sessionFinished, sessionStarted, TestResultError, TestSuiteResult } from '@web/test-runner-core/browser/session.js';
 import Jasmine from 'jasmine';
 
@@ -50,7 +51,6 @@ const buildTestResults = (jasmineTreeNode: SpecNode|SuiteNode): TestSuiteResult 
   return treeNode;
 };
 
-const failedSpecs:TestResultError[] = [];
 const failedImports: TestResultError[] = [];
 
 const jasmineRootTreeNode: SuiteNode= {
@@ -64,20 +64,20 @@ const jasmineRootTreeNode: SuiteNode= {
 env.addReporter({
   jasmineStarted: _suiteInfo => { },
   suiteStarted: result => {
+    const newNode: SuiteNode = {
+      id: result.id,
+      name: result.description,
+      passed: true,
+      tests: [],
+      suites: [],
+    };
+
     if (!result.parentSuiteId) {
-      jasmineRootTreeNode.id = result.id;
-      jasmineRootTreeNode.name = result.description;
+      jasmineRootTreeNode.suites.push(newNode);
     } else {
       const nodeFound = findParentNode(jasmineRootTreeNode, result);
-      if (nodeFound) {
-        nodeFound.suites.push({
-          id: result.id,
-          name: result.description,
-          suites: [],
-          tests: [],
-          passed: true,
-        });
-      }
+      assert(nodeFound, 'Expected parent suite to be found.');
+      nodeFound.suites.push(newNode);
     }
   },
   specStarted: result => {
@@ -124,7 +124,6 @@ env.addReporter({
           actual: JSON.stringify(e.actual) ?? String(e.actual)
         };
 
-        failedSpecs.push(testResultError);
         nodeFound.errors.push(testResultError);
       };
     }
@@ -137,7 +136,7 @@ env.addReporter({
     nodeFound.passed = result.status === "passed";
   },
   jasmineDone: result => {
-    const errors: TestResultError[] = [...failedSpecs, ...failedImports];
+    const errors: TestResultError[] = [...failedImports];
 
     if (result.incompleteReason) {
       errors.push({message: result.incompleteReason});
