@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.1.1
+- fix: do not log errors twice, and improve suite logging
+
 ## 0.1.0
 
 Thanks to [@devversion](https://github.com/devversion) and [@rhashimoto
