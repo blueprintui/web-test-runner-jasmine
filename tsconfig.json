@@ -12,6 +12,7 @@
     "noUnusedLocals": false,
     "noUnusedParameters": true,
     "strictFunctionTypes": true,
+    "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
     "noFallthroughCasesInSwitch": true,
     "strictNullChecks": true,
