@@ -1,7 +1,10 @@
 # Changelog
 
+## 0.1.2
+- fix: reporting of confusing failed expectations [@devversion](https://github.com/devversion)
+
 ## 0.1.1
-- fix: do not log errors twice, and improve suite logging
+- fix: do not log errors twice, and improve suite logging [@devversion](https://github.com/devversion)
 
 ## 0.1.0
 
