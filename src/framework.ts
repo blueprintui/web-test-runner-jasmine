@@ -6,6 +6,7 @@ import Jasmine from 'jasmine';
 
 import { JasmineConfig } from './index';
 import { findParentNode, findResultNode, isSuiteNode, SpecNode, SuiteNode } from './jasmine-suite-nodes';
+import { yellow, bold } from 'ansi-colors';
 
 declare const testFramework: {config: JasmineConfig};
 
@@ -107,21 +108,20 @@ env.addReporter({
       throw new Error(`Unexpectedly found suite node, while spec node was expected: ${result.id}`);
     }
 
-    nodeFound.passed = result.status === "passed";
-    nodeFound.skipped = false;
+    nodeFound.passed = result.status === "passed" || result.status === 'pending';
+    // Pending is synonymous for "skipped" in Jasmine. Pending tests that never complete
+    // should end up as "failing" if the Jasmine individual test timeout is exceeded.
+    nodeFound.skipped = result.status === 'pending';
     nodeFound.duration = result.duration;
 
     if (result.failedExpectations && result.failedExpectations.length > 0) {
       nodeFound.errors = [];
       for (let i = 0; i < result.failedExpectations.length; i++) {
         const e = result.failedExpectations[i];
-
         const testResultError: TestResultError = {
-          message: result.fullName + ': ' + e.message,
+          message: yellow(`\n\n${e.message}\n`),
           name: result.description,
           stack: e.stack,
-          expected: JSON.stringify(e.expected) ?? String(e.expected),
-          actual: JSON.stringify(e.actual) ?? String(e.actual)
         };
 
         nodeFound.errors.push(testResultError);
@@ -134,20 +134,7 @@ env.addReporter({
       throw new Error(`Could not find result node for suite: ${result.id}`);
     }
     nodeFound.passed = result.status === "passed";
-  },
-  jasmineDone: result => {
-    const errors: TestResultError[] = [...failedImports];
-
-    if (result.incompleteReason) {
-      errors.push({message: result.incompleteReason});
-    }
-
-    sessionFinished({
-      passed: result.overallStatus === 'passed',
-      testResults: buildTestResults(jasmineRootTreeNode),
-      errors,
-    });
-  },
+  }
 });
 
 (async () => {
@@ -172,7 +159,23 @@ env.addReporter({
 
   try {
     await import(new URL(testFile, document.baseURI).href);
-    env.execute();
+
+    // Run jasmine.
+    const result = await env.execute();
+
+    const errors: TestResultError[] = [...failedImports];
+    if (result.incompleteReason) {
+      errors.push({message: result.incompleteReason});
+    }
+    if (result.order.random) {
+      console.log(`Jasmine randomize seed: ${result.order.seed}`);
+    }
+
+    sessionFinished({
+      passed: result.overallStatus === 'passed',
+      testResults: buildTestResults(jasmineRootTreeNode),
+      errors,
+    });
   } catch (error) {
     console.log(error);
     sessionFailed(error);
