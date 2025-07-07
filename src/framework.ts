@@ -158,6 +158,8 @@ env.addReporter({
   }
 
   try {
+    env.configure(config);
+
     await import(new URL(testFile, document.baseURI).href);
 
     // Run jasmine.

@@ -7,7 +7,9 @@ export interface JasmineConfig {
   defaultTimeoutInterval?: number;
   /** @deprecated use defaultTimeoutInterval */
   timeout?: number;
-  styles?: []
+  styles?: [];
+  random: boolean;
+  seed: number|string;
 }
 
 export const jasmineTestRunnerConfig = () => {
