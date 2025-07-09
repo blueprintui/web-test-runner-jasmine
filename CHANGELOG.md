@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.3
+- upgrade peer deps for jasmine
+- improve jasmine config type definitions
+- pass test framework config to jasmine env config
+
 ## 0.1.2
 - fix: reporting of confusing failed expectations [@devversion](https://github.com/devversion)
 

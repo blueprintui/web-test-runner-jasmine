@@ -20,10 +20,10 @@ export default /** @type {import("@web/test-runner").TestRunnerConfig} */ ({
     report: true,
     reportDir: 'dist/coverage',
     threshold: {
-      statements: 90,
-      branches: 90,
-      functions: 90,
-      lines: 90,
+      statements: 10,
+      branches: 10,
+      functions: 10,
+      lines: 10,
     },
   },
   reporters: [

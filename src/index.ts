@@ -2,12 +2,9 @@ import { defaultReporter } from '@web/test-runner';
 import fs from 'fs';
 import path from 'path';
 
-export interface JasmineConfig {
+export interface JasmineConfig extends jasmine.Configuration {
   /** https://jasmine.github.io/api/edge/jasmine.html#.DEFAULT_TIMEOUT_INTERVAL */
   defaultTimeoutInterval?: number;
-  /** @deprecated use defaultTimeoutInterval */
-  timeout?: number;
-  styles?: []
 }
 
 export const jasmineTestRunnerConfig = () => {

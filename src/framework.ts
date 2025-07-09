@@ -3,12 +3,10 @@
 import assert from 'assert';
 import { getConfig, sessionFailed, sessionFinished, sessionStarted, TestResultError, TestSuiteResult } from '@web/test-runner-core/browser/session.js';
 import Jasmine from 'jasmine';
+import { yellow } from 'ansi-colors';
 
-import { JasmineConfig } from './index';
+import type { JasmineConfig } from './index';
 import { findParentNode, findResultNode, isSuiteNode, SpecNode, SuiteNode } from './jasmine-suite-nodes';
-import { yellow, bold } from 'ansi-colors';
-
-declare const testFramework: {config: JasmineConfig};
 
 // Needed for Jasmine to pick up Windows as `jasmineGlobal`.
 window.global = window;
@@ -16,11 +14,10 @@ window.global = window;
 // @ts-ignore
 const jasmineRequire = await import('jasmine-core/lib/jasmine-core/jasmine.js');
 const jasmine = jasmineRequire.core(jasmineRequire);
-
-jasmine.DEFAULT_TIMEOUT_INTERVAL = testFramework.config.timeout;
 const global = jasmine.getGlobal();
 global.jasmine = jasmine;
-const env: Jasmine = jasmine.getEnv();
+const env: jasmine.Env = jasmine.getEnv();
+
 Object.assign(window, jasmineRequire.interface(jasmine, env));
 window.onload = function () { };
 
@@ -140,7 +137,7 @@ env.addReporter({
 (async () => {
   sessionStarted();
   const { testFile, debug, testFrameworkConfig } = await getConfig();
-  const config = { defaultTimeoutInterval: 5000, ...(testFrameworkConfig ?? {}) };
+  const config = { defaultTimeoutInterval: 5000, ...(testFrameworkConfig ?? {}) } as JasmineConfig;
 
   jasmine.DEFAULT_TIMEOUT_INTERVAL = config.defaultTimeoutInterval;
 
@@ -158,6 +155,7 @@ env.addReporter({
   }
 
   try {
+    env.configure(config);
     await import(new URL(testFile, document.baseURI).href);
 
     // Run jasmine.

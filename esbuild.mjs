@@ -1,7 +1,7 @@
-import {build} from 'esbuild';
-import {env, nodeless} from "unenv";
+import { build } from 'esbuild';
+import { env, nodeless } from 'unenv';
 
-const {alias, external} = env(nodeless, {})
+const { alias, external } = env(nodeless, {})
 
 await build({
   entryPoints: ['dist/build/framework.js'],
