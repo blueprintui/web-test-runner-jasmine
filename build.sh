@@ -2,8 +2,6 @@
 
 set -e
 
-npm run clean
-
 tsc --project ./tsconfig.lib.json
 
 node ./esbuild.mjs

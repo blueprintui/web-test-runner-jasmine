@@ -1,6 +1,6 @@
 {
   "name": "web-test-runner-jasmine",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Plugin for Jasmine and Web Test Runner",
   "main": "./index.js",
   "module": "./index.js",
@@ -9,16 +9,17 @@
   "files": [
     "*"
   ],
+  "packageManager": "pnpm@10.11.0",
   "engines": {
-    "node": "^22.11.0"
+    "node": "22.15.1"
   },
   "scripts": {
-    "ci": "npm run clean && npm run build && npm run test",
-    "setup": "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash && unset npm_config_prefix && . ~/.nvm/nvm.sh && nvm install && nvm use && npm i && npx playwright install chromium --with-deps chromium",
-    "clean": "del ./dist",
+    "ci": "pnpm run clean && pnpm run build && pnpm run test",
+    "setup": "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash && unset npm_config_prefix && . ~/.nvm/nvm.sh && nvm install && nvm use && npm install -g pnpm && pnpm run clean && pnpm i --frozen-lockfile && pnpm dlx playwright install chromium --with-deps chromium",
+    "clean": "rm -rf ./dist",
     "test": "web-test-runner --coverage",
     "build": "bash build.sh",
-    "publish": "cd ./dist/lib && npm publish --access public"
+    "publish": "cd ./dist/lib && pnpm publish --access public"
   },
   "repository": {
     "type": "git",
@@ -31,20 +32,23 @@
   },
   "homepage": "https://github.com/blueprintui/web-test-runner-jasmine",
   "dependencies": {
-    "@web/test-runner": "^0.20.1",
+    "@web/test-runner": "^0.20.2",
     "@web/test-runner-core": "^0.13.4",
     "ansi-colors": "4.1.3"
   },
+  "peerDependencies": {
+    "jasmine": "^5.8.0",
+    "jasmine-core": "^5.8.0"
+  },
   "devDependencies": {
-    "@types/jasmine": "5.1.8",
-    "@web/dev-server-esbuild": "1.0.3",
-    "@web/test-runner-playwright": "0.11.0",
+    "@types/jasmine": "^5.1.8",
+    "@web/dev-server-esbuild": "1.0.4",
+    "@web/test-runner-playwright": "0.11.1",
     "cpy-cli": "5.0.0",
-    "del-cli": "6.0.0",
-    "esbuild": "^0.25.2",
-    "jasmine": "^5.5.0",
-    "jasmine-core": "^5.6.0",
-    "playwright": "1.49.1",
+    "esbuild": "^0.25.6",
+    "jasmine": "^5.8.0",
+    "jasmine-core": "^5.8.0",
+    "playwright": "1.53.2",
     "typescript": "5.7.3",
     "unenv": "^1.10.0"
   }
