@@ -1,5 +1,8 @@
 # Changelog
 
+### 0.1.4
+- fix minimum nodejs version
+
 ## 0.1.3
 - upgrade peer deps for jasmine
 - improve jasmine config type definitions
