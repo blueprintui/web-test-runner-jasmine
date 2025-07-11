@@ -15,5 +15,4 @@ jobs:
           node-version-file: './.nvmrc'
           cache: 'pnpm'
       - run: pnpm run setup
-      - run: pnpm i --frozen-lockfile
       - run: pnpm run ci
