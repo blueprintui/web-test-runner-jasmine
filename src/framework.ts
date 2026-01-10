@@ -49,7 +49,15 @@ const buildTestResults = (jasmineTreeNode: SpecNode|SuiteNode): TestSuiteResult 
   return treeNode;
 };
 
-const failedImports: TestResultError[] = [];
+const failedExpectationToError = (e: jasmine.FailedExpectation, runnableName: string) : TestResultError => {
+  return {
+    message: yellow(`\n\n${e.message}\n`),
+    name: runnableName,
+    stack: e.stack,
+  };
+}
+
+const topSuiteErrors: TestResultError[] = [];
 
 const jasmineRootTreeNode: SuiteNode= {
   id: null,
@@ -114,15 +122,9 @@ env.addReporter({
     if (result.failedExpectations && result.failedExpectations.length > 0) {
       nodeFound.errors = [];
       for (let i = 0; i < result.failedExpectations.length; i++) {
-        const e = result.failedExpectations[i];
-        const testResultError: TestResultError = {
-          message: yellow(`\n\n${e.message}\n`),
-          name: result.description,
-          stack: e.stack,
-        };
-
-        nodeFound.errors.push(testResultError);
-      };
+        nodeFound.errors.push(failedExpectationToError(
+            result.failedExpectations[i], result.description));
+      }
     }
   },
   suiteDone: result => {
@@ -131,6 +133,12 @@ env.addReporter({
       throw new Error(`Could not find result node for suite: ${result.id}`);
     }
     nodeFound.passed = result.status === "passed";
+  },
+  jasmineDone: result => {
+    for (let i = 0; i < result.failedExpectations.length; i++) {
+      topSuiteErrors.push(failedExpectationToError(
+          result.failedExpectations[i], 'Error at the top level'));
+    }
   }
 });
 
@@ -161,9 +169,8 @@ env.addReporter({
     // Run jasmine.
     const result = await env.execute();
 
-    const errors: TestResultError[] = [...failedImports];
     if (result.incompleteReason) {
-      errors.push({message: result.incompleteReason});
+      topSuiteErrors.push({message: result.incompleteReason});
     }
     if (result.order.random) {
       console.log(`Jasmine randomize seed: ${result.order.seed}`);
@@ -172,7 +179,7 @@ env.addReporter({
     sessionFinished({
       passed: result.overallStatus === 'passed',
       testResults: buildTestResults(jasmineRootTreeNode),
-      errors,
+      errors: topSuiteErrors
     });
   } catch (error) {
     console.log(error);
