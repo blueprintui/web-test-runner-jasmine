@@ -21,6 +21,8 @@ const env: jasmine.Env = jasmine.getEnv();
 Object.assign(window, jasmineRequire.interface(jasmine, env));
 window.onload = function () { };
 
+const suiteErrors: TestResultError[] = [];
+
 const buildTestResults = (jasmineTreeNode: SpecNode|SuiteNode): TestSuiteResult => {
   const treeNode: TestSuiteResult = {
     name: jasmineTreeNode.name,
@@ -56,8 +58,6 @@ const failedExpectationToError = (e: jasmine.FailedExpectation, runnableName: st
     stack: e.stack,
   };
 }
-
-const topSuiteErrors: TestResultError[] = [];
 
 const jasmineRootTreeNode: SuiteNode= {
   id: null,
@@ -133,10 +133,17 @@ env.addReporter({
       throw new Error(`Could not find result node for suite: ${result.id}`);
     }
     nodeFound.passed = result.status === "passed";
+
+    // The TestSuiteResult interface doesn't allow for errors, so record them
+    // for later reporting as part of the top level TestSession.
+    for (let i = 0; i < result.failedExpectations.length; i++) {
+      suiteErrors.push(failedExpectationToError(
+          result.failedExpectations[i], result.fullName));
+    }
   },
   jasmineDone: result => {
     for (let i = 0; i < result.failedExpectations.length; i++) {
-      topSuiteErrors.push(failedExpectationToError(
+      suiteErrors.push(failedExpectationToError(
           result.failedExpectations[i], 'Error at the top level'));
     }
   }
@@ -170,7 +177,7 @@ env.addReporter({
     const result = await env.execute();
 
     if (result.incompleteReason) {
-      topSuiteErrors.push({message: result.incompleteReason});
+      suiteErrors.push({message: result.incompleteReason});
     }
     if (result.order.random) {
       console.log(`Jasmine randomize seed: ${result.order.seed}`);
@@ -179,7 +186,7 @@ env.addReporter({
     sessionFinished({
       passed: result.overallStatus === 'passed',
       testResults: buildTestResults(jasmineRootTreeNode),
-      errors: topSuiteErrors
+      errors: suiteErrors,
     });
   } catch (error) {
     console.log(error);
