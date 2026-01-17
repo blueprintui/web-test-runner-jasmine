@@ -14,7 +14,6 @@ export const jasmineTestRunnerConfig = () => {
     ],
     testRunnerHtml: (_path: any, config: { testFramework: { config?: JasmineConfig } }) => {
       const testFramework = {
-        path: './node_modules/jasmine-core/lib/jasmine-core/jasmine.js',
         config: {
           defaultTimeoutInterval: 5000,
           styles: [],
@@ -30,6 +29,7 @@ export const jasmineTestRunnerConfig = () => {
             <script type="module">
               globalThis.testFramework = {...${JSON.stringify(testFramework)}};
             </script>
+            <script src="node_modules/jasmine-core/lib/jasmine-core/jasmine.js"></script>
             <script type="module">
               ${fs.readFileSync(path.join(import.meta.dirname, 'framework.mjs'), 'utf8')}
             </script>
