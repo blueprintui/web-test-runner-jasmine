@@ -1,5 +1,8 @@
 # Changelog
 
+### 0.1.5
+- report suite and top suite errors
+
 ### 0.1.4
 - fix minimum nodejs version
 
