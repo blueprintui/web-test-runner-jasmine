@@ -3,8 +3,8 @@ import fs from 'fs';
 import path from 'path';
 
 export interface JasmineConfig extends jasmine.Configuration {
-  /** https://jasmine.github.io/api/edge/jasmine.html#.DEFAULT_TIMEOUT_INTERVAL */
   defaultTimeoutInterval?: number;
+  styles?: string[];
 }
 
 export const jasmineTestRunnerConfig = () => {
@@ -14,7 +14,6 @@ export const jasmineTestRunnerConfig = () => {
     ],
     testRunnerHtml: (_path: any, config: { testFramework: { config?: JasmineConfig } }) => {
       const testFramework = {
-        path: './node_modules/jasmine-core/lib/jasmine-core/jasmine.js',
         config: {
           defaultTimeoutInterval: 5000,
           styles: [],
@@ -31,7 +30,7 @@ export const jasmineTestRunnerConfig = () => {
               globalThis.testFramework = {...${JSON.stringify(testFramework)}};
             </script>
             <script type="module">
-              ${fs.readFileSync(path.join(import.meta.dirname, 'framework.mjs'), 'utf8')}
+              ${fs.readFileSync(path.join(import.meta.dirname, 'jasmine/index.js'), 'utf8')}
             </script>
           </head>
           <body></body>

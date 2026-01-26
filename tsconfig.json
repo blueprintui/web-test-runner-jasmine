@@ -18,7 +18,7 @@
     "strictNullChecks": true,
     "inlineSourceMap": false,
     "importHelpers": true,
-    "outDir": "./dist/lib",
+    "outDir": "./dist",
     "sourceMap": true,
     "inlineSources": true,
     "rootDir": "./src"

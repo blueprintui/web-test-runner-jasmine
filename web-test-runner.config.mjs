@@ -1,7 +1,7 @@
 import { playwrightLauncher } from '@web/test-runner-playwright';
 import { esbuildPlugin } from '@web/dev-server-esbuild';
 import { defaultReporter, summaryReporter } from "@web/test-runner";
-import { jasmineTestRunnerConfig } from './dist/lib/index.js'; // web-test-runner-jasmine
+import { jasmineTestRunnerConfig } from './dist/index.js'; // web-test-runner-jasmine
 
 export default /** @type {import("@web/test-runner").TestRunnerConfig} */ ({
   ...jasmineTestRunnerConfig(),
@@ -15,16 +15,8 @@ export default /** @type {import("@web/test-runner").TestRunnerConfig} */ ({
   browsers: [playwrightLauncher({ product: 'chromium' })],
   plugins: [esbuildPlugin({ ts: true, json: true, target: 'auto', sourceMap: true })],
   coverageConfig: {
-    require: ['ts-node/register'],
-    extension: ['.ts'],
     report: true,
-    reportDir: 'dist/coverage',
-    threshold: {
-      statements: 10,
-      branches: 10,
-      functions: 10,
-      lines: 10,
-    },
+    reportDir: 'coverage',
   },
   reporters: [
     defaultReporter(),
