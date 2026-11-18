@@ -1,6 +1,6 @@
 {
   "name": "web-test-runner-jasmine",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Plugin for Jasmine and Web Test Runner",
   "type": "module",
   "files": [
@@ -38,14 +38,14 @@
   },
   "homepage": "https://github.com/blueprintui/web-test-runner-jasmine",
   "dependencies": {
-    "@web/test-runner": "^0.20.2",
-    "@web/test-runner-core": "^0.13.4"
+    "@web/test-runner": "^1.0.0",
+    "@web/test-runner-core": "^1.0.0"
   },
   "peerDependencies": {
-    "jasmine-core": "^6.0.1"
+    "jasmine-core": "^6.0.1 || ^7.0.0"
   },
   "devDependencies": {
-    "@types/jasmine": "^6.0.0",
+    "@types/jasmine": "^6.0.0 || ^7.0.0",
     "@web/dev-server-esbuild": "1.0.4",
     "@web/test-runner-playwright": "0.11.1",
     "esbuild": "0.27.2",
